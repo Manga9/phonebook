@@ -12,6 +12,11 @@ class phonebookController extends Controller
         return view('phonebook');
     }
 
+    public function getData()
+    {
+        return Phonebook::orderBy('name', 'ASC')->get();
+    }
+
     public function store(Request $request) {
         $this->validate($request, [
             'name' => 'required',
@@ -28,7 +33,21 @@ class phonebookController extends Controller
         $pb->save();
     }
 
-    public function getData() {
-        return Phonebook::orderby('name','ASC')->get();
+    public function update (Request $request, $id) {
+        $this->validate($request, [
+            'name' => 'required',
+            'phone' => 'required|max:11|min:11',
+            'email' => 'required|unique:phonebooks,email,' . $request->id
+        ]);
+
+        $pb = Phonebook::find($id);
+
+        $pb->name = $request->name;
+        $pb->phone = $request->phone;
+        $pb->email = $request->email;
+
+        $pb->save();
     }
+
+
 }
