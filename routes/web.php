@@ -1,6 +1,7 @@
 <?php
 
-Route::get('/', 'phonebookController@index');
-Route::post('/phonebook', 'phonebookController@store');
-Route::post('getData', 'phonebookController@getData');
-Route::patch('/phonebook/{id?}', 'phonebookController@update');
+Route::GET('/', 'phonebookController@index');
+Route::POST('/phonebook', 'phonebookController@store');
+Route::POST('getData', 'phonebookController@getData');
+Route::PATCH('/phonebook/{id?}', 'phonebookController@update');
+Route::DELETE('/phonebook/{id?}', 'phonebookController@destroy');

@@ -49,5 +49,8 @@ class phonebookController extends Controller
         $pb->save();
     }
 
+    public function destroy($id) {
+        Phonebook::where('id', $id)->delete();
+    }
 
 }

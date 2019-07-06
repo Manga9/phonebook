@@ -2066,6 +2066,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2080,6 +2083,7 @@ __webpack_require__.r(__webpack_exports__);
       addActive: '',
       showActive: '',
       editActive: '',
+      loading: false,
       contacts: {},
       errors: {}
     };
@@ -2107,6 +2111,20 @@ __webpack_require__.r(__webpack_exports__);
     openEdit: function openEdit(key) {
       this.$children[2].contact = this.contacts[key];
       this.editActive = 'is-active';
+    },
+    del: function del(key, id) {
+      var _this2 = this;
+
+      if (confirm('Are You Sure ?')) {
+        this.loading = !this.loading;
+        axios["delete"]("/phonebook/".concat(id)).then(function (response) {
+          _this2.contacts.splice(key, 1);
+
+          _this2.loading = !_this2.loading;
+        })["catch"](function (error) {
+          return _this2.errors = error.response.data.errors;
+        });
+      }
     }
   }
 });
@@ -33429,7 +33447,13 @@ var render = function() {
             on: { click: _vm.open }
           },
           [_vm._v("\n                Add New\n            ")]
-        )
+        ),
+        _vm._v(" "),
+        _vm.loading
+          ? _c("span", { staticClass: "is-pulled-right" }, [
+              _c("i", { staticClass: "fa fa-refresh fa-spin fa-lg fa-fw" })
+            ])
+          : _vm._e()
       ]),
       _vm._v(" "),
       _vm._m(0),
@@ -33452,7 +33476,17 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm._m(1, true),
+          _c("span", { staticClass: "column is-1" }, [
+            _c("i", {
+              staticClass: "fa fa-trash has-text-danger",
+              attrs: { "aria-hidden": "true" },
+              on: {
+                click: function($event) {
+                  return _vm.del(key, contact.id)
+                }
+              }
+            })
+          ]),
           _vm._v(" "),
           _c("span", { staticClass: "column is-1" }, [
             _c("i", {
@@ -33517,17 +33551,6 @@ var staticRenderFns = [
           })
         ])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "column is-1" }, [
-      _c("i", {
-        staticClass: "fa fa-trash has-text-danger",
-        attrs: { "aria-hidden": "true" }
-      })
     ])
   }
 ]

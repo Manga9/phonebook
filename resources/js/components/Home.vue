@@ -5,6 +5,9 @@
             <button class="button is-link is-outlined" @click="open">
                 Add New
             </button>
+            <span class='is-pulled-right' v-if="loading">
+                <i class="fa fa-refresh fa-spin fa-lg fa-fw"></i>
+            </span>
         </p>
         <div class="panel-block">
             <p class="control has-icons-left">
@@ -22,7 +25,7 @@
                 {{ contact.name }}
             </span>
             <span class='column is-1'>
-                <i class="fa fa-trash has-text-danger" aria-hidden="true"></i>
+                <i class="fa fa-trash has-text-danger" aria-hidden="true" @click="del(key,contact.id)"></i>
             </span>
 
             <span class='column is-1'>
@@ -54,6 +57,7 @@ export default {
             addActive: '',
             showActive: '',
             editActive: '',
+            loading: false,
             contacts: {},
             errors: {},
         }
@@ -78,6 +82,14 @@ export default {
             this.$children[2].contact = this.contacts[key]
             this.editActive = 'is-active';
         },
+        del(key, id) {
+            if(confirm('Are You Sure ?')) {
+                this.loading = !this.loading
+                axios.delete(`/phonebook/${id}`)
+                .then((response) => {this.contacts.splice(key,1); this.loading = !this.loading})
+                .catch((error) => this.errors = error.response.data.errors)
+            }
+        }
     }
 }
 </script>
