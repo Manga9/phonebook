@@ -72,6 +72,14 @@ export default {
             .then((response) => {
                 this.close()
                 this.$parent.contacts.push(response.data)
+                this.$parent.contacts.sort(function (a, b) {
+                    if (a.name > b.name) {
+                        return 1;
+                    } else if (a.name < b.name) {
+                        return -1;
+                    }
+                })
+                this.contact = ''
             })
             .catch((error) => this.errors = error.response.data.errors)
         }

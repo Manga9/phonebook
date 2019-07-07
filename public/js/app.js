@@ -1913,6 +1913,16 @@ __webpack_require__.r(__webpack_exports__);
         _this.close();
 
         _this.$parent.contacts.push(response.data);
+
+        _this.$parent.contacts.sort(function (a, b) {
+          if (a.name > b.name) {
+            return 1;
+          } else if (a.name < b.name) {
+            return -1;
+          }
+        });
+
+        _this.contact = '';
       })["catch"](function (error) {
         return _this.errors = error.response.data.errors;
       });
