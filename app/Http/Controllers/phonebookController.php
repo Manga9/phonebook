@@ -31,6 +31,8 @@ class phonebookController extends Controller
         $pb->email = $request->email;
 
         $pb->save();
+
+        return $pb;
     }
 
     public function update (Request $request, $id) {

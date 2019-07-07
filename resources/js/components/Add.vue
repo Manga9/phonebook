@@ -71,7 +71,7 @@ export default {
             axios.post('/phonebook', this.$data.contact)
             .then((response) => {
                 this.close()
-                this.contact.push(response.data)
+                this.$parent.contacts.push(response.data)
             })
             .catch((error) => this.errors = error.response.data.errors)
         }

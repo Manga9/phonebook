@@ -1912,7 +1912,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/phonebook', this.$data.contact).then(function (response) {
         _this.close();
 
-        _this.contact.push(response.data);
+        _this.$parent.contacts.push(response.data);
       })["catch"](function (error) {
         return _this.errors = error.response.data.errors;
       });
