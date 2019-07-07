@@ -20,14 +20,14 @@ class phonebookController extends Controller
     public function store(Request $request) {
         $this->validate($request, [
             'name' => 'required',
-            'phone' => 'required|max:11|min:11',
+            'phone' => 'required|min:11',
             'email' => 'required|unique:phonebooks,email,'. $request->id
         ]);
 
         $pb = new Phonebook;
 
         $pb->name = $request->name;
-        $pb->phone = $request->phone;
+        $pb->phone =  $request->phone;
         $pb->email = $request->email;
 
         $pb->save();
@@ -38,7 +38,7 @@ class phonebookController extends Controller
     public function update (Request $request, $id) {
         $this->validate($request, [
             'name' => 'required',
-            'phone' => 'required|max:11|min:11',
+            'phone' => 'required|min:11',
             'email' => 'required|unique:phonebooks,email,' . $request->id
         ]);
 

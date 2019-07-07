@@ -1983,24 +1983,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['openModal'],
   data: function data() {
     return {
       contact: {},
       errors: {}
     };
   },
-  props: ['openModal'],
   methods: {
     close: function close() {
       this.$emit('closeRequest');
@@ -2009,9 +1999,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.patch("/phonebook/".concat(this.contact.id), this.$data.contact).then(function (response) {
-        _this.close();
-
-        _this.contact.push(response.data);
+        return _this.close();
       })["catch"](function (error) {
         return _this.errors = error.response.data.errors;
       });
@@ -2115,7 +2103,10 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.searchQuery.length > 0) {
         this.temp = this.contacts.filter(function (val) {
-          return val.name.toLowerCase().indexOf(_this2.searchQuery.toLowerCase()) > -1;
+          return Object.keys(val).some(function (key) {
+            var string = String(val[key]);
+            return string.toLowerCase().indexOf(_this2.searchQuery.toLowerCase()) > -1;
+          });
         });
       } else {
         this.temp = this.contacts;
@@ -2130,11 +2121,11 @@ __webpack_require__.r(__webpack_exports__);
       this.addActive = this.showActive = this.editActive = '';
     },
     openShow: function openShow(key) {
-      this.$children[1].contact = this.contacts[key];
+      this.$children[1].contact = this.temp[key];
       this.showActive = 'is-active';
     },
     openEdit: function openEdit(key) {
-      this.$children[2].contact = this.contacts[key];
+      this.$children[2].contact = this.temp[key];
       this.editActive = 'is-active';
     },
     del: function del(key, id) {
@@ -33148,7 +33139,7 @@ var render = function() {
               ],
               staticClass: "input",
               class: { "is-danger": _vm.errors.phone },
-              attrs: { type: "number", placeholder: "Phone" },
+              attrs: { type: "text", placeholder: "Phone" },
               domProps: { value: _vm.contact.phone },
               on: {
                 input: function($event) {
@@ -33275,7 +33266,7 @@ var render = function() {
     _c("div", { staticClass: "modal-card" }, [
       _c("header", { staticClass: "modal-card-head" }, [
         _c("p", { staticClass: "modal-card-title" }, [
-          _vm._v("Add New Contact")
+          _vm._v("Update " + _vm._s(_vm.contact.name) + "'s Details")
         ]),
         _vm._v(" "),
         _c("button", {
@@ -33289,7 +33280,7 @@ var render = function() {
         _c("div", { staticClass: "field" }, [
           _c("label", { staticClass: "label" }, [_vm._v("Name")]),
           _vm._v(" "),
-          _c("div", { staticClass: "control has-icons-left has-icons-right" }, [
+          _c("div", { staticClass: "control" }, [
             _c("input", {
               directives: [
                 {
@@ -33311,13 +33302,11 @@ var render = function() {
                   _vm.$set(_vm.contact, "name", $event.target.value)
                 }
               }
-            }),
-            _vm._v(" "),
-            _vm._m(0)
+            })
           ]),
           _vm._v(" "),
           _vm.errors.name
-            ? _c("p", { staticClass: "help is-danger" }, [
+            ? _c("small", { staticClass: "has-text-danger" }, [
                 _vm._v(_vm._s(_vm.errors.name[0]))
               ])
             : _vm._e()
@@ -33326,7 +33315,7 @@ var render = function() {
         _c("div", { staticClass: "field" }, [
           _c("label", { staticClass: "label" }, [_vm._v("Phone")]),
           _vm._v(" "),
-          _c("div", { staticClass: "control has-icons-left has-icons-right" }, [
+          _c("div", { staticClass: "control" }, [
             _c("input", {
               directives: [
                 {
@@ -33338,7 +33327,7 @@ var render = function() {
               ],
               staticClass: "input",
               class: { "is-danger": _vm.errors.phone },
-              attrs: { type: "number", placeholder: "Phone" },
+              attrs: { type: "text", placeholder: "Phone" },
               domProps: { value: _vm.contact.phone },
               on: {
                 input: function($event) {
@@ -33348,13 +33337,11 @@ var render = function() {
                   _vm.$set(_vm.contact, "phone", $event.target.value)
                 }
               }
-            }),
-            _vm._v(" "),
-            _vm._m(1)
+            })
           ]),
           _vm._v(" "),
           _vm.errors.phone
-            ? _c("p", { staticClass: "help is-danger" }, [
+            ? _c("small", { staticClass: "has-text-danger" }, [
                 _vm._v(_vm._s(_vm.errors.phone[0]))
               ])
             : _vm._e()
@@ -33363,7 +33350,7 @@ var render = function() {
         _c("div", { staticClass: "field" }, [
           _c("label", { staticClass: "label" }, [_vm._v("Email")]),
           _vm._v(" "),
-          _c("div", { staticClass: "control has-icons-left has-icons-right" }, [
+          _c("div", { staticClass: "control" }, [
             _c("input", {
               directives: [
                 {
@@ -33385,13 +33372,11 @@ var render = function() {
                   _vm.$set(_vm.contact, "email", $event.target.value)
                 }
               }
-            }),
-            _vm._v(" "),
-            _vm._m(2)
+            })
           ]),
           _vm._v(" "),
           _vm.errors.email
-            ? _c("p", { staticClass: "help is-danger" }, [
+            ? _c("small", { staticClass: "has-text-danger" }, [
                 _vm._v(_vm._s(_vm.errors.email[0]))
               ])
             : _vm._e()
@@ -33412,32 +33397,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "icon is-small is-left" }, [
-      _c("i", { staticClass: "fa fa-user" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "icon is-small is-left" }, [
-      _c("i", { staticClass: "fa fa-phone" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "icon is-small is-left" }, [
-      _c("i", { staticClass: "fa fa-envelope" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

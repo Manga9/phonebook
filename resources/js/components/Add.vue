@@ -22,7 +22,7 @@
       <div class="field">
         <label class="label">Phone</label>
         <div class="control has-icons-left has-icons-right">
-          <input class="input" :class="{'is-danger':errors.phone}" type="number" placeholder="Phone" v-model="contact.phone">
+          <input class="input" :class="{'is-danger':errors.phone}" type="text" placeholder="Phone" v-model="contact.phone">
           <span class="icon is-small is-left">
             <i class="fa fa-phone"></i>
           </span>

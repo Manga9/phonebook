@@ -73,7 +73,10 @@ export default {
         searchQuery () {
             if(this.searchQuery.length > 0) {
                 this.temp = this.contacts.filter((val) => {
-                    return val.name.toLowerCase().indexOf(this.searchQuery.toLowerCase())>-1
+                        return Object.keys(val).some((key) => {
+                        let string = String(val[key])
+                        return string.toLowerCase().indexOf(this.searchQuery.toLowerCase())>-1
+                    })
                 });
             } else {
                 this.temp = this.contacts;
@@ -88,11 +91,11 @@ export default {
             this.addActive = this.showActive = this.editActive = ''
         },
         openShow(key){
-            this.$children[1].contact = this.contacts[key]
+            this.$children[1].contact = this.temp[key]
             this.showActive = 'is-active';
         },
         openEdit(key){
-            this.$children[2].contact = this.contacts[key]
+            this.$children[2].contact = this.temp[key]
             this.editActive = 'is-active';
         },
         del(key, id) {
